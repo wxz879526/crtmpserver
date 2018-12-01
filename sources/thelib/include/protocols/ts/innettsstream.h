@@ -1,21 +1,21 @@
 /*
- *  Copyright (c) 2010,
- *  Gavriloaie Eugen-Andrei (shiretu@gmail.com)
- *
- *  This file is part of crtmpserver.
- *  crtmpserver is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  crtmpserver is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with crtmpserver.  If not, see <http://www.gnu.org/licenses/>.
- */
+*  Copyright (c) 2010,
+*  Gavriloaie Eugen-Andrei (shiretu@gmail.com)
+*
+*  This file is part of crtmpserver.
+*  crtmpserver is free software: you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation, either version 3 of the License, or
+*  (at your option) any later version.
+*
+*  crtmpserver is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*
+*  You should have received a copy of the GNU General Public License
+*  along with crtmpserver.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 
 #ifdef HAS_PROTOCOL_TS
@@ -30,7 +30,7 @@
 struct _PIDDescriptor;
 
 class DLLEXP InNetTSStream
-: public BaseInNetStream {
+	: public BaseInNetStream {
 private:
 	//audio section
 	_PIDDescriptor *_pAudioPidDescriptor;
@@ -41,7 +41,9 @@ private:
 #ifdef COMPUTE_DTS_TIME
 	double _dtsTimeAudio;
 #endif
-	IOBuffer _audioBucket;
+	double _deltaTimeAudio;
+	IOBuffer _audioBuffer;
+	double _lastGotAudioTimestamp;
 	double _lastSentAudioTimestamp;
 	uint64_t _audioPacketsCount;
 	uint64_t _statsAudioPacketsCount;
@@ -59,30 +61,37 @@ private:
 #ifdef COMPUTE_DTS_TIME
 	double _dtsTimeVideo;
 #endif
+	double _deltaTimeVideo;
 	uint64_t _videoPacketsCount;
 	uint64_t _videoBytesCount;
 	uint64_t _videoDroppedPacketsCount;
 	uint64_t _videoDroppedBytesCount;
-	IOBuffer _videoBucket;
+	IOBuffer _currentNal;
 
+	double _feedTime;
+
+	uint32_t _cursor;
 	StreamCapabilities _streamCapabilities;
+	bool _firstNAL;
 
 	IOBuffer _SPS;
 	IOBuffer _PPS;
 public:
 	InNetTSStream(BaseProtocol *pProtocol, StreamsManager *pStreamsManager,
-			string name, uint32_t bandwidthHint);
+		string name, uint32_t bandwidthHint);
 	virtual ~InNetTSStream();
 	virtual StreamCapabilities * GetCapabilities();
 
 	void SetAudioVideoPidDescriptors(_PIDDescriptor *pAudioPidDescriptor,
-			_PIDDescriptor *pVideoPidDescriptor);
+		_PIDDescriptor *pVideoPidDescriptor);
+
+	double GetFeedTime();
 
 	bool FeedData(uint8_t *pData, uint32_t length, bool packetStart,
-			bool isAudio, int8_t sequenceNumber);
+		bool isAudio, int8_t sequenceNumber);
 	virtual bool FeedData(uint8_t *pData, uint32_t dataLength,
-			uint32_t processedLength, uint32_t totalLength,
-			double absoluteTimestamp, bool isAudio);
+		uint32_t processedLength, uint32_t totalLength,
+		double absoluteTimestamp, bool isAudio);
 	virtual void ReadyForSend();
 	virtual bool IsCompatibleWithType(uint64_t type);
 	virtual void SignalOutStreamAttached(BaseOutStream *pOutStream);
@@ -94,9 +103,11 @@ public:
 	virtual bool SignalStop();
 	virtual void GetStats(Variant &info, uint32_t namespaceId = 0);
 private:
-	bool HandleAudioData();
-	bool HandleVideoData();
-	bool ProcessNal(uint8_t *pBuffer, int32_t length, double timestamp);
+	bool HandleAudioData(uint8_t *pRawBuffer, uint32_t rawBufferLength,
+		double timestamp, bool packetStart);
+	bool HandleVideoData(uint8_t *pRawBuffer, uint32_t rawBufferLength,
+		double timestamp, bool packetStart);
+	bool ProcessNal(double timestamp);
 	void InitializeVideoCapabilities(uint8_t *pData, uint32_t length);
 	void InitializeAudioCapabilities(uint8_t *pData, uint32_t length);
 };
@@ -104,4 +115,3 @@ private:
 
 #endif	/* _INNETTSSTREAM_H */
 #endif	/* HAS_PROTOCOL_TS */
-

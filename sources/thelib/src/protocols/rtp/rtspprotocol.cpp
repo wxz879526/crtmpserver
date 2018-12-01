@@ -485,7 +485,7 @@ bool RTSPProtocol::SendMessage(Variant &headers, string &content) {
 
 	//2. Add the content length if required
 	if (content.size() > 0) {
-		headers[RTSP_HEADERS][RTSP_HEADERS_CONTENT_LENGTH] = format("%"PRIz"u", content.size());
+		headers[RTSP_HEADERS][RTSP_HEADERS_CONTENT_LENGTH] = format("%" PRIz"u", content.size());
 	}
 
 	//3. Add the session id if necessary

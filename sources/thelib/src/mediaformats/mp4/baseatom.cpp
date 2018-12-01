@@ -60,7 +60,7 @@ MP4Document * BaseAtom::GetDoc() {
 }
 
 BaseAtom::operator string() {
-	return format("S: %"PRIu64"(0x%"PRIx64"); L: %"PRIu64"(0x%"PRIx64"); T: %u(%s)",
+	return format("S: %" PRIu64"(0x%" PRIx64"); L: %" PRIu64"(0x%" PRIx64"); T: %u(%s)",
 			_start, _start, _size, _size, GetTypeNumeric(), STR(GetTypeString()));
 }
 

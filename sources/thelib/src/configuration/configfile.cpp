@@ -380,7 +380,7 @@ bool ConfigFile::NormalizeApplication(Variant &node) {
 	if (node.HasKeyChain(V_STRING, false, 1, CONF_APPLICATION_MEDIAFOLDER))
 		mediaFolder = (string) node.GetValue(CONF_APPLICATION_MEDIAFOLDER, false);
 	if (mediaFolder == "") {
-		mediaFolder = appDir + "media";
+		mediaFolder = appDir + "mediaFolder";
 	}
 	temp = normalizePath(mediaFolder, "");
 	if (temp == "") {

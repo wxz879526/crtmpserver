@@ -23,6 +23,8 @@
 
 #include "basevm.h"
 
+class luaL_Reg;
+
 class DLLEXP BaseVMLua
 : public BaseVM {
 private:

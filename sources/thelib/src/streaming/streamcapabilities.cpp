@@ -463,10 +463,10 @@ bool _VIDEO_AVC::Deserialize(IOBuffer &src, _VIDEO_AVC &dest) {
 
 _VIDEO_AVC::operator string() {
 	string result;
-	result += format("_spsLength: %"PRIu16"\n", _spsLength);
-	result += format("_ppsLength: %"PRIu16"\n", _ppsLength);
-	result += format("_rate: %"PRIu32"\n", _rate);
-	result += format("WxH: %"PRIu32"x%"PRIu32, _width, _height);
+	result += format("_spsLength: %" PRIu16"\n", _spsLength);
+	result += format("_ppsLength: %" PRIu16"\n", _ppsLength);
+	result += format("_rate: %" PRIu32"\n", _rate);
+	result += format("WxH: %" PRIu32"x%" PRIu32, _width, _height);
 	return result;
 }
 

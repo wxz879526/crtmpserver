@@ -340,7 +340,7 @@ bool BaseInFileStream::Initialize(Variant &medatada, int32_t clientSideBufferLen
 
 bool BaseInFileStream::Initialize(int32_t clientSideBufferLength, bool hasTimer) {
 	//1. Check to see if we have an universal seeking file
-	string seekFilePath = GetName() + "."MEDIA_TYPE_SEEK;
+	string seekFilePath = GetName() + "." MEDIA_TYPE_SEEK;
 	if (!fileExists(seekFilePath)) {
 		Variant temp;
 		temp[META_SERVER_FULL_PATH] = GetName();

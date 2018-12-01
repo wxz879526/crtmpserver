@@ -22,6 +22,11 @@
 
 #include "vmlua/basevmlua.h"
 
+extern "C" {
+#include <lualib.h>
+#include <lauxlib.h>
+}
+
 BaseVMLua::BaseVMLua()
 : BaseVM() {
 	_pGlobalState = NULL;

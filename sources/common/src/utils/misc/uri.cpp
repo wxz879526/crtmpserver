@@ -155,7 +155,7 @@ bool parseURI(string stringUri, URI &uri) {
 		portString = hostPort.substr(pos + 1);
 		portSpecified = true;
 		port = (uint16_t) atoi(STR(portString));
-		if (format("%"PRIu16, port) != portString) {
+		if (format("%" PRIu16, port) != portString) {
 			FATAL("Invalid port number specified: `%s`", STR(portString));
 			return false;
 		}
