@@ -806,6 +806,9 @@ bool BaseRTMPAppProtocolHandler::ProcessInvoke(BaseRTMPProtocol *pFrom,
 		return ProcessInvokeOnBWDone(pFrom, request);
 	} else if (functionName == RM_INVOKE_FUNCTION_CHECKBANDWIDTH) {
 		return ProcessInvokeCheckBandwidth(pFrom, request);
+	}
+	else if (functionName == "_checkbw") {
+		return ProcessInvokeCheckBandwidth(pFrom, request);
 	} else if (functionName == RM_INVOKE_FUNCTION_ONFCPUBLISH) {
 		return ProcessInvokeOnFCPublish(pFrom, request);
 	} else {
@@ -2123,8 +2126,8 @@ Variant BaseRTMPAppProtocolHandler::GetMetaData(string streamName,
 
 	//7. Load the rest of the metadata from a cache or load it from file and
 	//cache it after that
-	string metaPath = (string) result[META_SERVER_FULL_PATH] + "."MEDIA_TYPE_META;
-	string seekPath = (string) result[META_SERVER_FULL_PATH] + "."MEDIA_TYPE_SEEK;
+	string metaPath = (string) result[META_SERVER_FULL_PATH] + "." MEDIA_TYPE_META;
+	string seekPath = (string) result[META_SERVER_FULL_PATH] + "." MEDIA_TYPE_SEEK;
 	bool regenerateFiles = true;
 	if (fileExists(metaPath) && fileExists(seekPath)) {
 		StreamCapabilities capabilities;
